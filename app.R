@@ -48,7 +48,7 @@ ui <- fluidPage(
                                 )),
                               fluidRow(
                                 column(width = 6,
-                                       h4("Cost per SU of antibiotic per drug class (Cumulative) - QALY = 10"),
+                                       h4("Cost per Standard Unit of antibiotic per drug class (Cumulative) - QALY = 10"),
                                        dataTableOutput("table_cost_su")
                                 ),
                                 column(width = 6,
@@ -169,9 +169,9 @@ server <- function(input, output) {
       summarise(total_cost_su = sum(cost_su)) %>%
       ungroup()
     
-    datatable(df %>% rename(`Drug Class` = drug_class , `Cost per SU` = total_cost_su),
+    datatable(df %>% rename(`Drug Class` = drug_class , `Cost per Standard Unit` = total_cost_su),
               rownames = FALSE) %>%
-      formatCurrency("Cost per SU")
+      formatCurrency("Cost per Standard Unit")
   })
   
   output$table_cost_societal <- renderDataTable({
