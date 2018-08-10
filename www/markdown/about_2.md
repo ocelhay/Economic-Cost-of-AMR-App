@@ -10,4 +10,6 @@ Antimicrobial resistance (AMR) poses a colossal threat to global health and incu
 
 The model comprises three components: an estimate of the association between human antibiotic consumption and subsequent resistance; the economic costs of AMR for key pathogens; and consumption data for antibiotic classes that drive resistance in these organisms. These components were used to calculate the economic cost of AMR per antibiotic consumed for different drug classes, using data from Thailand and the United States as representatives of low/middle and high income countries.
 
-[A link to the manuscript will be provided when available. You can contact us.](mailto:yoel@tropmedres.ac)
+#### Publication
+
+["Enumerating the economic cost of antimicrobial resistance per antibiotic consumed to inform the evaluation of interventions affecting their use" in Antimicrobial Resistance & Infection Control](https://rdcu.be/4ixi)

@@ -1,4 +1,4 @@
-# Economic Cost of AMR App
+# Economic Cost of AMR App --------------------------------------------------------------------------------------------------
 # Author: olivier.celhay@gmail.com
 
 library(DT)
@@ -7,11 +7,8 @@ library(readxl)
 library(shiny)
 library(tidyverse)
 
-# Define UI for application that draws a histogram
+# Define UI for the application
 ui <- fluidPage(
-  
-  # Application title
-  # fluidRow(HTML('<h1>BETA</h1><center><h2>AMR Costing Application</h2></center>')),
   br(),
   
   column(12, 
@@ -31,9 +28,9 @@ ui <- fluidPage(
                                 column(width = 3,
                                        h4("Download Template"),
                                        HTML("With default values "),
-                                       a("for US", href="https://www.dropbox.com/s/35jyq12eamz3idj/Inputs_App_US.xlsx?dl=1", target="_blank"),
+                                       a("for high income countries", href="https://www.dropbox.com/s/35jyq12eamz3idj/Inputs_App_HIC.xlsx?dl=1", target="_blank"),
                                        em("or"),
-                                       a("for Thailand", href="https://www.dropbox.com/s/no5qln6y2y3i1q1/Inputs_App_TH.xlsx?dl=1", target="_blank")
+                                       a("for low/middle income countries", href="https://www.dropbox.com/s/no5qln6y2y3i1q1/Inputs_App_LMIC.xlsx?dl=1", target="_blank")
                                 ),
                                 column(width = 6,
                                        includeMarkdown('./www/markdown/template.md')
@@ -45,6 +42,10 @@ ui <- fluidPage(
                               )
                      ),
                      tabPanel('Outputs',
+                              fluidRow(
+                                column(width = 12,
+                              htmlOutput("country")
+                                )),
                               fluidRow(
                                 column(width = 6,
                                        h4("Cost per SU of antibiotic per drug class (Cumulative) - QALY = 10"),
@@ -60,24 +61,27 @@ ui <- fluidPage(
   )
 )
 
-# Define server logic required to draw a histogram
+
+
+
+
+# Define server logic
 server <- function(input, output) {
   
   output$downloadData <- downloadHandler(
-    filename = "Inputs_App_2.xlsx",
+    filename = "Inputs_App.xlsx",
     content = function(file) {
-      file.copy("www/Inputs_App_2.xlsx", file)
+      file.copy("www/Inputs_App.xlsx", file)
     }
   )
   
   # Initiate reactive values.
-  no_data <- reactiveVal(TRUE)
-  import_drug_conso <- reactiveVal(NULL)
-  import_drug_cost <- reactiveVal(NULL)
-  import_drug_resistance <- reactiveVal(NULL)
-  import_eco <- reactiveVal(NULL)
+  import_eco <- reactiveVal(read_xlsx("www/Default_Thailand.xlsx", sheet = 1))
+  import_drug_conso <- reactiveVal(read_xlsx("www/Default_Thailand.xlsx", sheet = 2))
+  import_drug_resistance <- reactiveVal(read_xlsx("www/Default_Thailand.xlsx", sheet = 3))
+  import_drug_cost <- reactiveVal(read_xlsx("www/Default_Thailand.xlsx", sheet = 4))
   
-  
+
   # Load .xlsx from input and update reactive values.
   observeEvent(input$file_xlsx,{
     
@@ -94,7 +98,6 @@ server <- function(input, output) {
     tmp_import_drug_cost <- read_xlsx(file, sheet = 4)
     
     # update reactive values
-    no_data(FALSE)
     import_eco(tmp_import_eco)
     import_drug_conso(tmp_import_drug_conso)
     import_drug_resistance(tmp_import_drug_resistance)
@@ -109,8 +112,6 @@ server <- function(input, output) {
   
   # Computations
   dr <- reactive({
-    if(isTRUE(no_data())) return(NULL)
-    
     # Rename columns
     eco <- import_eco()
     names(eco) <- c("country", "population", "gdp", "years")
@@ -156,9 +157,12 @@ server <- function(input, output) {
   
   
   # Outputs
+  output$country <- renderUI({
+    h2(import_eco()[1, 1])
+    })
+  
+  
   output$table_cost_su <- renderDataTable({
-    if(isTRUE(no_data())) return(NULL)
-    
     df <- dr() %>%
       filter(val == TRUE) %>%
       group_by(drug_class) %>%
@@ -171,8 +175,6 @@ server <- function(input, output) {
   })
   
   output$table_cost_societal <- renderDataTable({
-    if(isTRUE(no_data())) return(NULL)
-    
     df <- dr() %>%
       filter(val == TRUE) %>%
       group_by(drug_class, course_su) %>%

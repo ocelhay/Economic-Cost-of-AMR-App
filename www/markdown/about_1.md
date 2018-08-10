@@ -12,3 +12,5 @@ In the **"Outputs" tab**, two tables with associated AMR costs for these paramet
 
 - Cost per SU of antibiotic per drug class (Cumulative), with QALY = 10
 - Societal cost per course (USD), with QALY = 10
+
+If no input is provided, the tab displays a default output with Thailand data.
