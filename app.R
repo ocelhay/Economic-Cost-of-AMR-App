@@ -28,9 +28,9 @@ ui <- fluidPage(
                                 column(width = 3,
                                        h4("Download Template"),
                                        HTML("With default values "),
-                                       a("for high income countries", href="https://www.dropbox.com/s/35jyq12eamz3idj/Inputs_App_HIC.xlsx?dl=1", target="_blank"),
+                                       a("for high income countries", href="https://www.dropbox.com/s/y94qtjqi7gkveq0/Inputs_App_HIC.xlsx?dl=1", target="_blank"),
                                        em("or"),
-                                       a("for low/middle income countries", href="https://www.dropbox.com/s/no5qln6y2y3i1q1/Inputs_App_LMIC.xlsx?dl=1", target="_blank")
+                                       a("for low/middle income countries", href="https://www.dropbox.com/s/rqtvpwuzwrz7ddp/Inputs_App_LMIC.xlsx?dl=1", target="_blank")
                                 ),
                                 column(width = 6,
                                        includeMarkdown('./www/markdown/template.md')
